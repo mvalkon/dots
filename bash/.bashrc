@@ -119,5 +119,10 @@ source ~/dots/bash/.git-prompt.sh
 GIT_PS1_SHOWDIRTYSTATE=1
 SCREEN=""
 if [ -n "$STY" ]; then SCREEN="▢ "; fi
-export PS1='\[\033[1;32m\u@\h\033[00m\]:\[\033[01;34m\w\033[00;35m$(__git_ps1 " (%s)")\]\[\033[00m\]\[\033[00;35m$SCREEN\]\[\033[00m\]\$ ' 
 
+B_GREEN="\[\e[1;32m\]"
+B_BLUE="\[\e[1;34m\]"
+T_PURPLE="\[\e[0;35m\]"
+RES="\[\e[0m\]"
+
+export PS1="${B_GREEN}\u@\h${RES}:${B_BLUE}\w${T_PURPLE}$(__git_ps1 "(%s)")${SCREEN}${RES}$ "
