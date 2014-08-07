@@ -125,4 +125,4 @@ B_BLUE="\[\e[1;34m\]"
 T_PURPLE="\[\e[0;35m\]"
 RES="\[\e[0m\]"
 
-export PS1="${B_GREEN}\u@\h${RES}:${B_BLUE}\w${T_PURPLE}$(__git_ps1 "(%s)")${SCREEN}${RES}$ "
+export PS1="${B_GREEN}\u@\h${RES}:${B_BLUE}\w${T_PURPLE}\$(__git_ps1 ' (%s)')${SCREEN}${RES}$ "
