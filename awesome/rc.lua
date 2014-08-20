@@ -12,8 +12,6 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 -- Assault battery widget
 local assault = require('assault')
--- Brightness control
-local mon_bright = require('mon_bright')
 
 -- Load Debian menu entries
 require("debian.menu")
