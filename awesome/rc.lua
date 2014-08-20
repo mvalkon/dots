@@ -12,9 +12,26 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 -- Assault battery widget
 local assault = require('assault')
+-- Brightness control
+local mon_bright = require('mon_bright')
 
 -- Load Debian menu entries
 require("debian.menu")
+
+
+-- Some useful functions here
+function get_brightness()
+    -- Gets the current brightness. We trust that the eDP1 is always the first
+    -- display, so we stop there.
+    local xrandr = assert(io.popen("xrandr --verbose", "r"))
+    for line in xrandr:lines() do
+        brightness = line:match("Brightness: (%d.%d+)")
+        if brightness then
+            xrandr:close()
+            return tonumber(brightness)
+        end
+    end
+end
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -90,7 +107,6 @@ tags = {}
 
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    -- tags[s] = awful.tag({ "♨", "⌨", "⚡", "✉", "☕", "❁", "☃", "☄", "⚢" }, s, layouts[1])
     tags[s] = awful.tag({ "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑", "➒"  }, s, layouts[1]) -- these are boring but I like them.  
 end
 
@@ -101,7 +117,7 @@ myassault = assault({
     critical_level = 0.10,
     critical_color = "#f03669",
     charging_color = "#64cff2",
-    --font = "",
+    font = "M+ 1P Thin 11",
     normal_color = "#659fdb",
     --battery = "BAT0"
 })
@@ -302,8 +318,28 @@ globalkeys = awful.util.table.join(
     -- Sound buttons, Dell E7440
     awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer -q -D pulse set Master 1+ toggle") end),
     awful.key({ }, "XF86AudioLowerVolume", function() awful.util.spawn("amixer -c 1 set Master 2-") end),
-    awful.key({ }, "XF86AudioRaiseVolume", function() awful.util.spawn("amixer -c 1 set Master 2+ unmute") end)
+    awful.key({ }, "XF86AudioRaiseVolume", function() awful.util.spawn("amixer -c 1 set Master 2+ unmute") end),
+    awful.key({ }, "XF86MonBrightnessDown",
+              function() 
+                  local current_brightness = get_brightness() 
+                  local bright_step = 0.10
+                  if current_brightness >= 0.0 then
+                      awful.util.spawn("xrandr --output eDP1 --brightness "..current_brightness - bright_step)
+                  end
+              end),
+    awful.key({ }, "XF86MonBrightnessUp",
+              function()
+                  local current_brightness = get_brightness() 
+                  local bright_step = 0.10
+                  if current_brightness < 1.0 then
+                      awful.util.spawn("xrandr --output eDP1 --brightness "..current_brightness + bright_step)
+                  end
+              end)
 )
+
+
+        
+
 
 clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
