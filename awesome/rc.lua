@@ -12,10 +12,11 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 -- Assault battery widget
 local assault = require('assault')
+-- Text volume widget
+local txtvol = require('textvolume')
 
 -- Load Debian menu entries
 require("debian.menu")
-
 
 -- Some useful functions here
 function get_brightness()
@@ -230,7 +231,7 @@ for s = 1, screen.count() do
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(mytextclock)
-    --right_layout:add(myassault)
+    right_layout:add(volume_widget)
     right_layout:add(assault_layout)
     right_layout:add(mylayoutbox[s])
 
