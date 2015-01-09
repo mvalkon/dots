@@ -88,6 +88,7 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias lh='ls -alFh'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -113,6 +114,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
+export TERM="xterm-256color"
 
 # Lets do some prompt magic!
 source ~/dots/bash/.git-prompt.sh 
@@ -127,3 +129,8 @@ RES="\[\e[0m\]"
 
 export PS1="${B_GREEN}\u@\h${RES}:${B_BLUE}\w${T_PURPLE}\$(__git_ps1 ' (%s)')${SCREEN}${RES}$ "
 export PATH=$PATH:~/bin/
+
+GPG_TTY=$(tty)
+export GPG_TTY
+
+source ~/dots/bash/base16-eighties.dark.sh
