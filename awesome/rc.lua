@@ -14,6 +14,7 @@ local menubar = require("menubar")
 local assault = require('assault')
 -- Text volume widget
 local txtvol = require('textvolume')
+-- Mail widget
 
 -- Load Debian menu entries
 require("debian.menu")
@@ -62,8 +63,11 @@ end
 -- beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 beautiful.init("/home/emikkva/.config/awesome/themes/byte/theme.lua")
 
+-- Must load mailhoover here instead of top as theme needs to be inited.
+local mailhoover = require("mailhoover")
+
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
+terminal = "urxvt"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -120,6 +124,7 @@ myassault = assault({
     normal_color = "#659fdb",
     --battery = "BAT0"
 })
+
 
 -- }}}
 
