@@ -18,6 +18,9 @@ set lazyredraw
 " For regular expressions turn magic on
 set magic
 
+" Don't open the annoying wildmode window
+set wildmode=full
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Keymaps
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
