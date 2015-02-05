@@ -1,0 +1,77 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Basic configurations
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Fast saving
+nmap <leader>w :w!<cr>
+
+" base16 color scheme
+let base16colorspace=256
+colorscheme base16-eighties
+
+" Height of the command bar
+set cmdheight=2
+
+" Don't redraw while executing macros (good performance config)
+set lazyredraw
+
+" For regular expressions turn magic on
+set magic
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Keymaps
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
+map <space> /
+map <c-space> ?
+
+" Disable highlight when <leader><cr> is pressed
+map <silent> <leader><cr> :noh<cr>
+
+cmap W w !sudo tee % >/dev/null
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Spell checking
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Pressing ,ss will toggle and untoggle spell checking
+map <leader>ss :setlocal spell!<cr>
+
+" Shortcuts using <leader>
+map <leader>sn ]s
+map <leader>sp [s
+map <leader>sa zg
+map <leader>s? z=
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Filetype stuff
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" simple type highlight for C both from
+" http://blog.cdleary.com/2007/08/matching-_t-types-in-your-vimrc/
+"syntax match cType /\w\+_t\ze\W/ <-- hwy?!
+syntax match cType /\w\+_t\w\@!/
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Airline
+let g:airline_theme="base16"
+
+" CtrlP
+let g:ctrlp_cmd = 'CtrlPMixed'
+
+" gtags-cscope
+"" Switch to the header file with cscope:
+nnoremap <leader>h :cs find f %:t:r.h<cr>
+nnoremap <leader>vh :scs find f %:t:r.h<cr> 
+
+" Syntastic configuration
+let g:syntastic_c_compiler = 'clang'
+let g:syntastic_c_checkers = ['cppcheck', 'clang']
+let g:syntastic_check_on_open = 1
+
+" "Unbundles to the bottom
+UnBundle 'altercation/vim-colors-solarized'
+
