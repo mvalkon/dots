@@ -1,5 +1,5 @@
 Bundle 'chriskempson/base16-vim'
 Bundle 'gtags.vim'
 Bundle 'mvalkon/gtags-cscope'
-Bundle 'powerline/fonts'
+Bundle 'justinmk/vim-syntax-extra'
 

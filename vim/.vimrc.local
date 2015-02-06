@@ -47,15 +47,6 @@ map <leader>sa zg
 map <leader>s? z=
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Filetype stuff
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" simple type highlight for C both from
-" http://blog.cdleary.com/2007/08/matching-_t-types-in-your-vimrc/
-"syntax match cType /\w\+_t\ze\W/ <-- hwy?!
-syntax match cType /\w\+_t\w\@!/
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
