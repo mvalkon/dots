@@ -4,3 +4,6 @@
 [submodule "screenful"]
 	path = awesome/screenful
 	url = https://github.com/dluksza/screenful
+[submodule "vim/fonts"]
+	path = vim/fonts
+	url = https://github.com/powerline/fonts
