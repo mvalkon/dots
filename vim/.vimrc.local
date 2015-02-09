@@ -51,21 +51,51 @@ map <leader>s? z=
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Airline
+let g:airline_symbols = {}
 let g:airline_theme="base16"
+let g:airline_powerline_symbols=1
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
 
 " CtrlP
 let g:ctrlp_cmd = 'CtrlPMixed'
 
-" gtags-cscope
-"" Switch to the header file with cscope:
+" (gtags-)cscope
+
+" Switch to the header file with cscope:
 nnoremap <leader>h :cs find f %:t:r.h<cr>
-nnoremap <leader>vh :scs find f %:t:r.h<cr> 
+nnoremap <leader>vh :scs find f %:t:r.h<cr>
+
+nnoremap <leader>f <C-]>
+nnoremap <leader>r <C-t>
+nnoremap <leader>x <C-\>
+
+function! LoadCscope()
+    let db = findfile("cscope.out", ".;")
+    if (!empty(db))
+        let path = strpart(db, 0, match(db, "/cscope.out$"))
+        set nocscopeverbose " suppress 'duplicate connection' error
+        exe "cs add " . db . " " . path
+        set cscopeverbose
+    endif
+endfunction
+
+au BufEnter /* call LoadCscope()
+
+" CtrlP
+noremap <leader>t :CtrlPTag<cr>
 
 " Syntastic configuration
 let g:syntastic_c_compiler = 'clang'
 let g:syntastic_c_checkers = ['cppcheck', 'clang']
 let g:syntastic_check_on_open = 1
 
-" "Unbundles to the bottom
+" Unbundles to the bottom
 UnBundle 'altercation/vim-colors-solarized'
-
+UnBundle 'msvalkon/gtags-cscope'
+UnBundle 'spf13/PIV'
