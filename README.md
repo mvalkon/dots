@@ -11,3 +11,10 @@ For bash configurations
 
 ## urxvt
 A nice lightweight terminal.
+
+## vim
+Vim configurations. Using [spf13/spf13-vim][https://www.github.com/spf13/spf13-vim/] with some extra configuration.
+
+## tmux
+Recently changed from screen to tmux.
+

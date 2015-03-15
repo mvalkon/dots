@@ -32,7 +32,10 @@ map <c-space> ?
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
 
-cmap W w !sudo tee % >/dev/null
+command! W w! sudo tee % > /dev/null
+
+" jk is ESC
+imap jk <ESC>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Spell checking
