@@ -35,7 +35,8 @@ URxvt*scrollstyle: plain
 ! Shift + Up to rename the current tab
 ! Control + Right / Control + Left to move a tab
 
-URxvt.perl-ext-common: default,matcher,searchable-scrollback,keyboard-select,url-select,clipboard
+URxvt.perl-ext-common: default,matcher,searchable-scrollback,keyboard-select,\
+url-select,clipboard,font-size
 URxvt.matcher.button: 1
 URxvt.urlLauncher: x-www-browser
 
@@ -45,6 +46,12 @@ URxvt.keysym.M-s: perl:keyboard-select:search
 
 ! url-select
 URxvt.keysym.M-u: perl:url-select:select_next
+
+! font-size
+URxvt.keysym.C-Up:     perl:font-size:increase
+URxvt.keysym.C-Down:   perl:font-size:decrease
+URxvt.keysym.C-S-Up:   perl:font-size:incglobal
+URxvt.keysym.C-S-Down: perl:font-size:decglobal
 
 ! Clipboard settings
 URxvt.keysym.M-c:   perl:clipboard:copy
