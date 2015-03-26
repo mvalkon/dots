@@ -21,6 +21,9 @@ set magic
 " Don't open the annoying wildmode window
 set wildmode=full
 
+" textwidth is not filetype associated
+set textwidth=78
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Keymaps
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
