@@ -43,6 +43,15 @@ command! W w! sudo tee % > /dev/null
 " jk is ESC
 imap jk <ESC>
 
+" in spf13 the author maps easy window movement so that each mapping
+" ends with <C-W>_. I don't like this.
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+map <C-L> <C-W>l
+map <C-H> <C-W>h
+map <C-_> <C-W>_
+map <C-=> <C-W>=
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Spell checking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -103,6 +112,10 @@ noremap <leader>t :CtrlPTag<cr>
 let g:syntastic_c_compiler = 'clang'
 let g:syntastic_c_checkers = ['cppcheck', 'clang']
 let g:syntastic_check_on_open = 1
+
+" Haskellmode and haskell related
+let g:haddock_browser="/usr/bin/firefox"
+au BufEnter *.hs compiler ghc
 
 " Unbundles to the bottom
 UnBundle 'altercation/vim-colors-solarized'
