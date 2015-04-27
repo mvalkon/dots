@@ -128,11 +128,10 @@ T_PURPLE="\[\e[0;35m\]"
 RES="\[\e[0m\]"
 
 export PS1="${B_GREEN}\u@\h${RES}:${B_BLUE}\w${T_PURPLE}\$(__git_ps1 ' (%s)')${SCREEN}${RES}$ "
-export PATH=$PATH:~/bin/
+export PATH=$PATH:~/bin/:~/.cabal/bin
 
 GPG_TTY=$(tty)
 export GPG_TTY
 
 source ~/dots/bash/base16-eighties.dark.sh
-
 source ~/bin/sprenv.sh
