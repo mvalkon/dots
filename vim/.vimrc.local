@@ -116,6 +116,14 @@ let g:syntastic_check_on_open = 1
 " Haskellmode and haskell related
 let g:haddock_browser="/usr/bin/firefox"
 au BufEnter *.hs compiler ghc
+" Youcompleteme
+
+" Use preview window
+set completeopt+=preview
+
+" control the preview window
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_add_preview_to_completeopt = 1
 
 " Unbundles to the bottom
 UnBundle 'altercation/vim-colors-solarized'
