@@ -10,11 +10,7 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
--- Assault battery widget
-local assault = require('assault')
--- Text volume widget
-local txtvol = require('textvolume')
--- Mail widget
+local lain = require("lain")
 
 -- Load Debian menu entries
 require("debian.menu")
@@ -63,9 +59,6 @@ end
 -- beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 beautiful.init("/home/emikkva/.config/awesome/themes/byte/theme.lua")
 
--- Must load mailhoover here instead of top as theme needs to be inited.
-local mailhoover = require("mailhoover")
-
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
 editor = os.getenv("EDITOR") or "editor"
@@ -79,21 +72,18 @@ editor_cmd = terminal .. " -e " .. editor
 modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
-local layouts =
-{
+local layouts = {
+    lain.layout.uselesstile,
+    lain.layout.termfair,
+    lain.layout.centerfair,
+    lain.layout.uselesstile.left,
+    lain.layout.uselesstile.top,
+    lain.layout.uselesspiral.dwindle,
+    lain.layout.centerwork,
     awful.layout.suit.floating,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier
 }
+lain.layout.termfair.nmaster = 3
+lain.layout.termfair.ncol    = 1
 -- }}}
 
 -- {{{ Wallpaper
@@ -113,20 +103,6 @@ for s = 1, screen.count() do
     tags[s] = awful.tag({ "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑", "➒"  }, s, layouts[1]) -- these are boring but I like them.  
 end
 
--- {{{
---  Assault Battery..
-
-myassault = assault({
-    critical_level = 0.10,
-    critical_color = "#f03669",
-    charging_color = "#64cff2",
-    font = "M+ 1P Thin 11",
-    normal_color = "#659fdb",
-    --battery = "BAT0"
-})
-
-
--- }}}
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
@@ -151,10 +127,48 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- }}}
 
 -- {{{ Wibox
--- Create a textclock widget
-mytextclock = awful.widget.textclock()
+-- Textclock
+markup = lain.util.markup
+mytextclock = awful.widget.textclock(
+    markup.font("Tamsyn 3", " ") ..
+    markup(beautiful.fg_normal, " %d.%m | %H:%M "))
 
-local assault_layout = wibox.layout.margin(myassault,5,6,0,0)
+-- Calendar
+lain.widgets.calendar:attach(mytextclock, { fg = beautiful.fg_focus })
+
+-- ALSA volume
+volumewidget = lain.widgets.alsa({
+    card = "1",
+    channel = "Master",
+    timeout=0.1,
+    settings = function()
+        header = " "
+        level  = volume_now.level
+
+        if volume_now.status == "off" then
+            level = level .. "M "
+        else
+            level = level .. "% "
+        end
+
+        widget:set_markup(markup(beautiful.fg_normal, header) .. level)
+    end
+})
+
+-- Battery
+batwidget = lain.widgets.bat({
+    settings = function()
+        bat_header = " "
+        bat_p      = bat_now.perc .. "% "
+
+        if bat_now.status == "Not present" then
+            bat_header = ""
+            bat_p      = ""
+        end
+
+        widget:set_markup(markup(beautiful.fg_normal, bat_header) .. bat_p)
+    end
+})
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -230,15 +244,15 @@ for s = 1, screen.count() do
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(mylauncher)
     left_layout:add(mytaglist[s])
+    left_layout:add(mylayoutbox[s])
     left_layout:add(mypromptbox[s])
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(volumewidget)
+    right_layout:add(batwidget)
     right_layout:add(mytextclock)
-    right_layout:add(volume_widget)
-    right_layout:add(assault_layout)
-    right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
@@ -340,10 +354,6 @@ globalkeys = awful.util.table.join(
                   end
               end)
 )
-
-
-        
-
 
 clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
@@ -516,3 +526,9 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 theme.taglist_font = "M+ 2M Medium 10"
+theme.useless_gap_width = 10
+theme.lain_icons         = os.getenv("HOME") .. "/.config/awesome/lain/icons/layout/default/"
+theme.layout_termfair    = theme.lain_icons .. "termfairw.png"
+theme.layout_cascade     = theme.lain_icons .. "cascadew.png"
+theme.layout_cascadetile = theme.lain_icons .. "cascadetilew.png"
+theme.layout_centerwork  = theme.lain_icons .. "centerworkw.png"

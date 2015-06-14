@@ -10,3 +10,6 @@
 [submodule "urxvt/urxvt-font-size"]
 	path = urxvt/urxvt-font-size
 	url = https://github.com/majutsushi/urxvt-font-size.git
+[submodule "awesome/lain"]
+	path = awesome/lain
+	url = https://github.com/copycat-killer/lain.git
