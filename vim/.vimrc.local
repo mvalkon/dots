@@ -123,9 +123,11 @@ set completeopt+=preview
 
 " control the preview window
 let g:ycm_add_preview_to_completeopt = 1
-let g:ycm_add_preview_to_completeopt = 1
+if executable("ag")
+    set grepprg=ag\ --nogroup\ --nocolor
+endif
 
-" Unbundles to the bottom
-UnBundle 'altercation/vim-colors-solarized'
-UnBundle 'msvalkon/gtags-cscope'
-UnBundle 'spf13/PIV'
+nmap <leader>g <Plug>GrepOperatorOnCurrentDirectory
+vmap <leader>g <Plug>GrepOperatorOnCurrentDirectory
+nmap <leader><leader>g <Plug>GrepOperatorWithFilenamePrompt
+vmap <leader><leader>g <Plug>GrepOperatorWithFilenamePrompt
