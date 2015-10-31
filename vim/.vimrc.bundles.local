@@ -1,6 +1,10 @@
+if !exists("g:bundles")
+    let g:bundles = g:vundle#bundles
+endif
 Bundle 'chriskempson/base16-vim'
 Bundle 'gtags.vim'
 Bundle 'justinmk/vim-syntax-extra'
 Bundle 'cscope_macros.vim'
 
 Bundle 'inside/vim-grep-operator'
+UnBundle 'Twinside/vim-haskellConceal'
