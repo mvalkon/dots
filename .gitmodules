@@ -16,3 +16,6 @@
 [submodule "awesome/awesome-redshift"]
 	path = awesome/awesome-redshift
 	url = git://github.com/YoRyan/awesome-redshift.git
+[submodule "fzf"]
+	path = fzf
+	url = https://github.com/junegunn/fzf

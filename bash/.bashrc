@@ -135,3 +135,5 @@ export GPG_TTY
 
 source ~/dots/bash/base16-eighties.dark.sh
 source ~/bin/sprenv.sh
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
