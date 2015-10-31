@@ -11,6 +11,7 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local lain = require("lain")
+local redshift = require("redshift")
 
 -- Load Debian menu entries
 require("debian.menu")
@@ -169,6 +170,14 @@ batwidget = lain.widgets.bat({
         widget:set_markup(markup(beautiful.fg_normal, bat_header) .. bat_p)
     end
 })
+
+-- Redshift config
+-- set binary path (optional)
+redshift.redshift = "/usr/bin/redshift"
+-- set additional redshift arguments (optional)
+redshift.options = "-c ~/.config/redshift.conf"
+-- 1 for dim, 0 for not dimmed
+redshift.init(1)
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -332,6 +341,11 @@ globalkeys = awful.util.table.join(
               end),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end),
+    -- Redshift
+    awful.key({ modkey }, "d", redshift.toggle),
+    awful.key({ modkey, "Shift" }, "d", redshift.dim),
+    awful.key({ modkey, "Control" }, "d", redshift.undim),
+    -- screen lock
     awful.key({}, "F12", function() awful.util.spawn("i3lock -c 000000") end),
     -- Sound buttons, Dell E7440
     awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer -q -D pulse set Master 1+ toggle") end),

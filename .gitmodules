@@ -13,3 +13,6 @@
 [submodule "awesome/lain"]
 	path = awesome/lain
 	url = https://github.com/copycat-killer/lain.git
+[submodule "awesome/awesome-redshift"]
+	path = awesome/awesome-redshift
+	url = git://github.com/YoRyan/awesome-redshift.git
