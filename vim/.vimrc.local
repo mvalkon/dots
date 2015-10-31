@@ -131,3 +131,5 @@ nmap <leader>g <Plug>GrepOperatorOnCurrentDirectory
 vmap <leader>g <Plug>GrepOperatorOnCurrentDirectory
 nmap <leader><leader>g <Plug>GrepOperatorWithFilenamePrompt
 vmap <leader><leader>g <Plug>GrepOperatorWithFilenamePrompt
+
+set rtp+=~/.fzf
