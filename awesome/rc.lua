@@ -330,7 +330,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
+    --awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
+    awful.key({ modkey },            "r",     function () awful.util.spawn(
+        'rofi -show run -fg "#eceff1" -bg "#263238" -hlfg "#AFE28A" -hlbg "#263238" -bc "#37474F" -location 0 -lines 10 -bw 0 -padding 10 -fuzzy') end),
 
     awful.key({ modkey }, "x",
               function ()
