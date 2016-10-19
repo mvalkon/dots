@@ -309,7 +309,6 @@
 
     " fzf.vim {
         nnoremap <silent> <leader>f :exe 'Files ' . <SID>fzf_root()<CR>
-        nnoremap <silent> <leader>t :Tabs <CR>
         nnoremap <silent> <leader>ag :Ag <C-R><C-W><CR>
 
         " determine fzf root if .git exists..
@@ -394,6 +393,8 @@
             au FileType go nmap <Leader>s <Plug>(go-implements)
             au FileType go nmap <Leader>i <Plug>(go-info)
             au FileType go nmap <Leader>e <Plug>(go-rename)
+            au FileType go nmap <leader>t  <Plug>(go-test)
+
         endif
     " }
     
@@ -414,6 +415,8 @@
     " Deoplete.vim {
         if has("nvim")
             let g:deoplete#enable_at_startup = 1
+            " deoplete tab-complete
+            inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
         endif
     " }"
 
