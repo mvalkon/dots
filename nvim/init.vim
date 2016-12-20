@@ -6,7 +6,6 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins {
     call plug#begin()
-    Plug 'tpope/vim-sensible'
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'junegunn/fzf.vim'
@@ -19,11 +18,16 @@
     Plug 'fatih/vim-go'
     Plug 'scrooloose/nerdtree'
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'mhartington/deoplete-typescript',
+    Plug 'leafgarland/typescript-vim',
+    Plug 'lambdalisue/vim-gita', {'on': ['Gita']}
     " colorschemes
     Plug 'chriskempson/base16-vim'
     Plug 'morhetz/gruvbox'
     Plug 'fatih/molokai'
     Plug 'junegunn/seoul256.vim'
+    Plug '29decibel/codeschool-vim-theme'
+    Plug 'joshdick/onedark.vim'
     call plug#end()
 " }
 
@@ -31,21 +35,8 @@
     let mapleader = ','
     set background=dark
 
-    " Allow to trigger background
-    function! ToggleBG()
-        let s:tbg = &background
-        " Inversion
-        if s:tbg == "dark"
-            set background=light
-        else
-            set background=dark
-        endif
-    endfunction
-    noremap <leader>bg :call ToggleBG()<CR>
-
     filetype plugin indent on   " Automatically detect file types.
     syntax on                   " Syntax highlighting
-    set mouse=a                 " Automatically enable mouse usage
     set mousehide               " Hide the mouse cursor while typing
     scriptencoding utf-8
 
@@ -89,11 +80,14 @@
  
 " neovim UI (colors ...) {
     if isdirectory(expand("~/.config/nvim/plugged/base16-vim"))
-        let base16colorspace=256  " Access colors present in 256 colorspace
-        colorscheme base16-eighties
-        highlight LineNr ctermfg=yellow
+        ""let base16colorspace=256  " Access colors present in 256 colorspace
+        ""colorscheme base16-eighties
+        ""highlight LineNr ctermfg=yellow
     endif
   
+    let g:airline_theme="onedark"
+    colorscheme onedark
+
     set showmode                    " Display the current mode
     set cursorline                  " Highlight current line
   
@@ -134,7 +128,8 @@
     set list
     set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
     set noswapfile
-    ""set termguicolors
+    set nobackup
+    set termguicolors
 " }
 
 " Formatting {
@@ -149,9 +144,9 @@
     set splitbelow                  " Puts new split windows to the bottom of the current
     set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
     " Remove trailing whitespaces and ^M chars
-    autocmd FileType c,cpp,java,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+    autocmd FileType c,cpp,java,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql,typescript,html autocmd BufWritePre <buffer> call StripTrailingWhitespace()
     autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
-    autocmd FileType haskell,puppet,ruby,yml setlocal expandtab shiftwidth=2 softtabstop=2
+    autocmd FileType haskell,puppet,ruby,yml,typescript setlocal expandtab shiftwidth=2 softtabstop=2
 
     " Workaround broken colour highlighting in Haskell
     autocmd FileType haskell,rust setlocal nospell
@@ -178,7 +173,6 @@
     " Minimize and reset windows
     map <A-_> <C-W>_
     map <A-=> <C-W>=
-
 
     " Wrapped lines goes down/up to next row, rather than next line in file.
     noremap j gj
@@ -288,9 +282,6 @@
 
     " open a vertical split terminal
     nnoremap <leader>vo :vsp term://$SHELL<CR>
-
-
-
 " }
 
 " Plugin configs {
@@ -304,7 +295,6 @@
        let g:airline_symbols.branch = ''
        let g:airline_symbols.readonly = ''
        let g:airline_symbols.linenr = ''
-       let g:airline_theme="base16"
     " }
 
     " fzf.vim {
@@ -419,6 +409,24 @@
             inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
         endif
     " }"
+
+    " Deoplete-typescript {
+        if isdirectory(expand("~/.config/nvim/plugged/deoplete-typescript"))
+            let g:deoplete#enable_ignore_case = 1
+            let g:deoplete#auto_complete_start_length = 0
+            let g:auto_complete_start_length = 0
+            let g:deoplete#enable_refresh_always = 1
+            let g:deoplete#enable_debug = 1
+            let g:deoplete#enable_profile = 1
+            ""call deoplete#enable_logging('DEBUG', '/tmp/deoplete.log')
+        endif
+    " }"
+    " typescript-vim {
+        if isdirectory(expand("~/.config/nvim/plugged/typescript-vim"))
+            autocmd QuickFixCmdPost [^l]* nested cwindow
+            autocmd QuickFixCmdPost    l* nested lwindow
+        endif
+    " }
 
 " Functions {
     function! LoadCscope()
