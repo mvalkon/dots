@@ -114,24 +114,28 @@ if ! shopt -oq posix; then
   fi
 fi
 
+#if [ -f $TMUX ]; then
+#    export TERM="xterm-256color"
+#else
+#    export TERM="screen-256color"
+#fi
 export TERM="xterm-256color"
 
 # Lets do some prompt magic!
 source ~/dots/bash/.git-prompt.sh 
 GIT_PS1_SHOWDIRTYSTATE=1
-SCREEN=""
-if [ -n "$STY" ]; then SCREEN="▢ "; fi
 
 B_GREEN="\[\e[1;32m\]"
 B_BLUE="\[\e[1;34m\]"
 T_PURPLE="\[\e[0;35m\]"
 RES="\[\e[0m\]"
+ARR=$'\u2192'
 
-export PS1="${B_GREEN}\u@\h${RES}:${B_BLUE}\w${T_PURPLE}\$(__git_ps1 ' (%s)')${SCREEN}${RES}$ "
-export PATH=$PATH:~/bin/:~/.cabal/bin
+export PS1="${B_GREEN}\u@\h${RES}:${B_BLUE}\w${T_PURPLE}\$(__git_ps1 ' (%s)')${RES}\n${B_BLUE}$ARR${RES} "
 
 GPG_TTY=$(tty)
 export GPG_TTY
+export GPG_KEY="$(gpg -K | awk 'NR==3 {print $2}' | sed 's/2048R\///g')"
 
 source ~/dots/bash/base16-eighties.dark.sh
 source ~/bin/sprenv.sh
