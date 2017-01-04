@@ -144,7 +144,7 @@
     set splitbelow                  " Puts new split windows to the bottom of the current
     set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
     " Remove trailing whitespaces and ^M chars
-    autocmd FileType c,cpp,java,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql,typescript,html autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+    autocmd FileType c,cpp,java,php,javascript,puppet,python,rust,twig,xml,rml,perl,sql,typescript,html,json autocmd BufWritePre <buffer> call StripTrailingWhitespace()
     autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
     autocmd FileType haskell,puppet,ruby,yml,typescript setlocal expandtab shiftwidth=2 softtabstop=2
 
