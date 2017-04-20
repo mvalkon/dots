@@ -300,13 +300,18 @@
 
     " fzf.vim {
         nnoremap <silent> <leader>f :exe 'Files ' . <SID>fzf_root()<CR>
-        nnoremap <silent> <leader>ag :Ag <C-R><C-W><CR>
+        nnoremap <silent> <leader>ag :Rag <CR>
+        nnoremap <silent> <leader>b :Buffers <CR>
 
         " determine fzf root if .git exists..
         fun! s:fzf_root()
             let path = finddir(".git", expand("%:p:h").";")
             return fnamemodify(substitute(path, "\\.git", "", ""), ":p:h")
         endfun
+
+        " Defines a new command 'Rag' which search from the git root "
+        command! -nargs=* Rag
+          \ call fzf#vim#ag(<q-args>, extend({'dir': s:fzf_root()}, g:fzf#vim#layout()))
 
         " Exit from fzf with esc
         au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
