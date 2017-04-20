@@ -13,7 +13,7 @@
     Plug 'tpope/vim-repeat'
     Plug 'nathanaelkane/vim-indent-guides'
     Plug 'neomake/neomake'
-    Plug 'vim-scripts/AutoClose'
+    Plug 'townk/vim-autoclose'
     Plug 'ludovicchabant/vim-gutentags'
     Plug 'fatih/vim-go'
     Plug 'scrooloose/nerdtree'
