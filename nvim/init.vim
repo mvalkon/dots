@@ -21,6 +21,9 @@
     Plug 'mhartington/deoplete-typescript',
     Plug 'leafgarland/typescript-vim',
     Plug 'lambdalisue/vim-gita', {'on': ['Gita']}
+    Plug 'derekwyatt/vim-scala'
+    Plug 'janko-m/vim-test'
+    Plug 'ensime/ensime-vim'
     " colorschemes
     Plug 'chriskempson/base16-vim'
     Plug 'morhetz/gruvbox'
@@ -427,6 +430,23 @@
             autocmd QuickFixCmdPost    l* nested lwindow
         endif
     " }
+    "
+    " test-vim {
+        if isdirectory(expand("~/.config/nvim/plugged/vim-test"))
+            let test#strategy = "neovim"
+            let test#python#runner = 'pytest'
+            nmap <silent> <leader>t :TestNearest<CR>
+            nmap <silent> <leader>T :TestFile<CR>
+        endif
+    " }
+    "
+    " ensime-vim {
+        if isdirectory(expand("~/.config/nvim/plugged/ensime-vim"))
+            let ensime_server_v2=1
+            autocmd BufWritePost *.scala silent :EnTypeCheck
+            au FileType scala nnoremap <localleader>df :EnDeclarationSplit v<CR>
+        endif
+    " }
 
 " Functions {
     function! LoadCscope()
@@ -454,5 +474,5 @@
         call cursor(l, c)
     endfunction
 
-    " }
+   " }
 " }
