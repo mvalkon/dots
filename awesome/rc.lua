@@ -379,6 +379,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey },            "r",     function () awful.util.spawn(
         'rofi -show run -fg "#eceff1" -bg "#263238" -hlfg "#AFE28A" -hlbg "#263238" -bc "#37474F" -location 0 -lines 10 -bw 0 -padding 10 -fuzzy') end),
 
+    awful.key({ modkey },            "e",     function () awful.util.spawn(
+        'rofi -combi-modi window,drun -show combi -modi combi') end),
+
     awful.key({ modkey }, "x",
               function ()
                   awful.prompt.run {
@@ -407,7 +410,7 @@ globalkeys = awful.util.table.join(
                   local current_brightness = get_brightness() 
                   local bright_step = 0.10
                   if current_brightness >= 0.0 then
-                      awful.util.spawn("xrandr --output eDP1-1 --brightness "..current_brightness - bright_step)
+                      awful.util.spawn("xrandr --output eDP-1 --brightness "..current_brightness - bright_step)
                   end
               end),
     awful.key({ }, "XF86MonBrightnessUp",
@@ -415,7 +418,7 @@ globalkeys = awful.util.table.join(
                   local current_brightness = get_brightness() 
                   local bright_step = 0.10
                   if current_brightness < 1.0 then
-                      awful.util.spawn("xrandr --output eDP1-1 --brightness "..current_brightness + bright_step)
+                      awful.util.spawn("xrandr --output eDP-1 --brightness "..current_brightness + bright_step)
                   end
               end)
 )
