@@ -153,7 +153,6 @@
 
     " Workaround broken colour highlighting in Haskell
     autocmd FileType haskell,rust setlocal nospell
-
 " }
 
 " Key (re)Mappings {
@@ -189,7 +188,6 @@
 
     " jk is ESC
     inoremap jk <Esc>
-    xnoremap jk <Esc>
     cnoremap jk <C-c>
 
     " Switch to the header file with cscope:
