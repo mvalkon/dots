@@ -86,10 +86,9 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias soda="cd ~/code/onecloud/src/github.com/sodacloudstack"
 source ~/dots/bash/base16-eighties.dark.sh
-idp()
-{
-    DOMAIN="${1:-eclouddemo.io}"
-    ONECLOUD_PASSWORD=$(pass oc/ocbot) get_token -d "${DOMAIN}"
-    TOKEN=$(cat ~/.onecloud/config | awk '{print $2}') && echo $TOKEN | xclip -selection C
-    export TOKEN
-}
+source ~/code/onecloud/env.sh
+export FZF_DEFAULT_OPTS='--no-height --no-reverse'
+export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
