@@ -390,6 +390,17 @@
             au FileType go nmap <Leader>i <Plug>(go-info)
             au FileType go nmap <Leader>e <Plug>(go-rename)
             au FileType go nmap <leader>t  <Plug>(go-test)
+            " GoAlternate
+            autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+            autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+            autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+            autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+            au FileType go nmap<leader>ae :A <CR>
+            au FileType go nmap<leader>av :AV <CR>
+            au FileType go nmap<leader>as :AS <CR>
+            au FileType go nmap<leader>at :AT <CR>
+
+            let g:go_decls_includes = "func,type"
 
         endif
     " }
