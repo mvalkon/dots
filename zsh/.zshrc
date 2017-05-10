@@ -52,7 +52,7 @@ ZSH_THEME="odin"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git fzf python pyenv colored-man-pages docker golang)
+plugins=(git fzf python pyenv colored-man-pages docker golang curl)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -90,5 +90,9 @@ source ~/code/onecloud/env.sh
 export FZF_DEFAULT_OPTS='--no-height --no-reverse'
 export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
+# GO related:
+export GOPATH=$HOME/code/onecloud
+export GOROOT=$HOME/src/go
+export PATH=$PATH:~/bin/:~/.cabal/bin:$GOROOT/bin:$GOPATH/bin
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
