@@ -19,22 +19,24 @@
     Plug 'scrooloose/nerdtree'
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'mhartington/deoplete-typescript',
+    Plug 'zchee/deoplete-jedi'
+	" Plug 'zchee/deoplete-go'
+	" Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
     Plug 'leafgarland/typescript-vim',
     Plug 'lambdalisue/vim-gita', {'on': ['Gita']}
     Plug 'derekwyatt/vim-scala'
     Plug 'janko-m/vim-test'
     Plug 'ensime/ensime-vim'
+    Plug 'artur-shaik/vim-javacomplete2'
+    Plug 'mfukar/robotframework-vim'
     " colorschemes
-    Plug 'chriskempson/base16-vim'
-    Plug 'morhetz/gruvbox'
-    Plug 'fatih/molokai'
-    Plug 'junegunn/seoul256.vim'
-    Plug '29decibel/codeschool-vim-theme'
     Plug 'joshdick/onedark.vim'
     call plug#end()
 " }
 
 " Set general stuff {
+    let g:python_host_prog = "/usr/local/opt/pyenv/versions/neovim2/bin/python"
+    let g:python3_host_prog = "/usr/local/opt/pyenv/versions/neovim3/bin/python"
     let mapleader = ','
     set background=dark
 
@@ -80,30 +82,30 @@
         set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
     endif
 " }
- 
+
 " neovim UI (colors ...) {
     if isdirectory(expand("~/.config/nvim/plugged/base16-vim"))
         ""let base16colorspace=256  " Access colors present in 256 colorspace
         ""colorscheme base16-eighties
         ""highlight LineNr ctermfg=yellow
     endif
-  
+
     let g:airline_theme="onedark"
     colorscheme onedark
 
     set showmode                    " Display the current mode
     set cursorline                  " Highlight current line
-  
+
     highlight clear SignColumn      " SignColumn should match background
     ""highlight clear LineNr          " Current line number row will have same background color in relative mode
-  
+
     if has('cmdline_info')
         set ruler                   " Show the ruler
         set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " A ruler on steroids
         set showcmd                 " Show partial commands in status line and
                                     " Selected characters/lines in  visual mode
     endif
-  
+
     if has('statusline')
         set laststatus=2
         set statusline=%<%f\                     " Filename
@@ -283,6 +285,9 @@
 
     " open a vertical split terminal
     nnoremap <leader>vo :vsp term://$SHELL<CR>
+
+    " Remap c-] since it's so hard on os x
+    nnoremap <leader>g <C-]>
 " }
 
 " Plugin configs {
@@ -316,7 +321,7 @@
         " Exit from fzf with esc
         au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
 
-        set rtp+=~/.fzf
+        set rtp+=/usr/local/opt/fzf
     " }
 
     " Ctags {
@@ -385,7 +390,7 @@
             au FileType go nmap <leader>gd <Plug>(go-doc)
             au FileType go nmap <leader>gv <Plug>(go-doc-vertical)
             au FileType go nmap <leader>gb <Plug>(go-doc-browser)
-            " Show a list of interfaces implemented by the type under cursor 
+            " Show a list of interfaces implemented by the type under cursor
             au FileType go nmap <Leader>s <Plug>(go-implements)
             au FileType go nmap <Leader>i <Plug>(go-info)
             au FileType go nmap <Leader>e <Plug>(go-rename)
@@ -404,7 +409,7 @@
 
         endif
     " }
-    
+
     " NERDTree {
         if isdirectory(expand("~/.config/nvim/plugged/nerdtree"))
            map <C-e> :NERDTreeToggle<CR>
@@ -418,12 +423,16 @@
            let g:nerdtree_tabs_open_on_gui_startup=0
         endif
     " }
-    
+
     " Deoplete.vim {
         if has("nvim")
             let g:deoplete#enable_at_startup = 1
+            let g:deoplete#enable_ignore_case = 'ignorecase'
             " deoplete tab-complete
             inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+            set completeopt+=noselect
+
+            autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
         endif
     " }"
 
@@ -435,7 +444,6 @@
             let g:deoplete#enable_refresh_always = 1
             let g:deoplete#enable_debug = 1
             let g:deoplete#enable_profile = 1
-            ""call deoplete#enable_logging('DEBUG', '/tmp/deoplete.log')
         endif
     " }"
     " typescript-vim {
@@ -448,7 +456,12 @@
     " test-vim {
         if isdirectory(expand("~/.config/nvim/plugged/vim-test"))
             let test#strategy = "neovim"
+            " Python test runners
             let test#python#runner = 'pytest'
+
+            " Some java related stuff
+            let test#java#maventest#file_pattern = 'IT.java'
+            let test#java#maventest#options = '-f ' . fnamemodify(findfile("pom.xml", ".;"), ":p")
             nmap <silent> <leader>t :TestNearest<CR>
             nmap <silent> <leader>T :TestFile<CR>
         endif
@@ -458,7 +471,21 @@
         if isdirectory(expand("~/.config/nvim/plugged/ensime-vim"))
             let ensime_server_v2=1
             autocmd BufWritePost *.scala silent :EnTypeCheck
-            au FileType scala nnoremap <localleader>df :EnDeclarationSplit v<CR>
+            autocmd BufWritePost *.scala silent :EnOrganizeImports
+            au FileType scala nnoremap <leader>df :EnDeclarationSplit v<CR>
+            au FileType scala nnoremap <leader>do :EnOrganizeImports <CR>
+            au FileType scala nnoremap <leader>di :EnSuggestImports <CR>
+            let g:deoplete#omni#input_patterns = {}
+            let g:deoplete#omni#input_patterns.scala = '[^. *\t]\.\w*'
+        endif
+    " }
+    "
+    " javacomplete2 {
+        if isdirectory(expand("~/.config/nvim/plugged/vim-javacomplete2"))
+            autocmd FileType java setlocal omnifunc=javacomplete#Complete
+            let g:JavaComplete_ClosingBrace = 0
+            let g:JavaComplete_JvmLauncher = "/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/bin/javac"
+            let g:JavaComplete_JavaCompiler = "/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/bin/javac"
         endif
     " }
 
@@ -487,6 +514,8 @@
         let @/=_s
         call cursor(l, c)
     endfunction
+
+    " }
 
    " }
 " }
