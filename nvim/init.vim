@@ -6,31 +6,58 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins {
     call plug#begin()
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
+    " Navigation and movement
     Plug 'junegunn/fzf.vim'
     Plug 'tpope/vim-surround'
+    Plug 'scrooloose/nerdtree'
     Plug 'tpope/vim-repeat'
+
+    " Formatting
     Plug 'nathanaelkane/vim-indent-guides'
-    Plug 'neomake/neomake'
     Plug 'townk/vim-autoclose'
     Plug 'ludovicchabant/vim-gutentags'
-    Plug 'fatih/vim-go'
-    Plug 'scrooloose/nerdtree'
+
+    " Autocomplete & Linting
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'mhartington/deoplete-typescript',
-    Plug 'zchee/deoplete-jedi'
-	" Plug 'zchee/deoplete-go'
-	" Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
-    Plug 'leafgarland/typescript-vim',
-    Plug 'lambdalisue/vim-gita', {'on': ['Gita']}
-    Plug 'derekwyatt/vim-scala'
+    Plug 'w0rp/ale'
+
+    " Testing generic
     Plug 'janko-m/vim-test'
-    Plug 'ensime/ensime-vim'
-    Plug 'artur-shaik/vim-javacomplete2'
     Plug 'mfukar/robotframework-vim'
-    " colorschemes
+
+    " Scala
+    Plug 'derekwyatt/vim-scala'
+
+    " Python
+    Plug 'zchee/deoplete-jedi'
+
+    " Go
+    Plug 'fatih/vim-go'
+    Plug 'zchee/deoplete-go'
+    Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
+    Plug 'sebdah/vim-delve'
+
+    " Javascript & FE
+    Plug 'leafgarland/typescript-vim',
+    Plug 'isRuslan/vim-es6'
+    Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+    Plug 'mhartington/deoplete-typescript',
+    Plug 'mattn/emmet-vim'
+    Plug 'posva/vim-vue'
+
+    " templating stuff
+    Plug 'mustache/vim-mustache-handlebars'
+
+
+    " VCS
+    Plug 'lambdalisue/vim-gita', {'on': ['Gita']}
+    Plug 'tpope/vim-fugitive'
+
+    " Look-and-feel
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
     Plug 'joshdick/onedark.vim'
+    Plug 'jackiehluo/vim-material'
     call plug#end()
 " }
 
@@ -39,6 +66,9 @@
     let g:python3_host_prog = "/usr/local/opt/pyenv/versions/neovim3/bin/python"
     let mapleader = ','
     set background=dark
+
+    " HACK!
+    set nofsync
 
     filetype plugin indent on   " Automatically detect file types.
     syntax on                   " Syntax highlighting
@@ -84,12 +114,6 @@
 " }
 
 " neovim UI (colors ...) {
-    if isdirectory(expand("~/.config/nvim/plugged/base16-vim"))
-        ""let base16colorspace=256  " Access colors present in 256 colorspace
-        ""colorscheme base16-eighties
-        ""highlight LineNr ctermfg=yellow
-    endif
-
     let g:airline_theme="onedark"
     colorscheme onedark
 
@@ -149,9 +173,9 @@
     set splitbelow                  " Puts new split windows to the bottom of the current
     set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
     " Remove trailing whitespaces and ^M chars
-    autocmd FileType c,cpp,java,php,javascript,puppet,python,rust,twig,xml,rml,perl,sql,typescript,html,json,scala,vim autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+    autocmd FileType c,cpp,java,php,javascript,puppet,python,rust,twig,xml,rml,perl,sql,typescript,html,json,scala,vim,yaml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
     autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
-    autocmd FileType haskell,puppet,ruby,yml,typescript setlocal expandtab shiftwidth=2 softtabstop=2
+    autocmd FileType scala,haskell,puppet,ruby,yml,yaml,typescript,vue,javascript,html setlocal expandtab shiftwidth=2 softtabstop=2
 
     " Workaround broken colour highlighting in Haskell
     autocmd FileType haskell,rust setlocal nospell
@@ -186,7 +210,7 @@
     map <space> /
 
     " Disable highlight when <leader><cr> is pressed
-    nmap <silent> <leader><cr> :set invhlsearch<CR>
+    nmap <silent> <leader><space> :set nohlsearch<CR>
 
     " jk is ESC
     inoremap jk <Esc>
@@ -196,6 +220,9 @@
     " FIXME: should understand which file you are in..
     nnoremap <leader>h :cs find f %:t:r.h<cr>
     nnoremap <leader>vh :scs find f %:t:r.h<cr>
+
+    " Open the current file in a chrome browser window
+    nnoremap <leader>co :exe ':silent !open -a "/Applications/Google Chrome.app" %' <CR>
 
     " Map g* keys in Normal, Operator-pending, and Visual+select
     " Same for 0, home, end, etc
@@ -281,13 +308,14 @@
 
     " open a bpython terminal below
     nnoremap <leader>bp :below 20sp term://bpython<CR>
-    autocmd BufWinEnter,WinEnter term://* startinsert
+    "autocmd BufWinEnter,WinEnter term://* startinsert
 
     " open a vertical split terminal
     nnoremap <leader>vo :vsp term://$SHELL<CR>
 
     " Remap c-] since it's so hard on os x
     nnoremap <leader>g <C-]>
+
 " }
 
 " Plugin configs {
@@ -305,8 +333,12 @@
 
     " fzf.vim {
         nnoremap <silent> <leader>f :exe 'Files ' . <SID>fzf_root()<CR>
-        nnoremap <silent> <leader>ag :Rag <CR>
+        nnoremap <silent> <leader>ag :Ag <CR>
+        nnoremap <silent> <leader>agg :Ag! <CR>
+        nnoremap <silent> <leader>rag :Rag! <CR>
         nnoremap <silent> <leader>b :Buffers <CR>
+        nnoremap <silent> <leader>c :Commits <CR>
+        nnoremap <silent> <leader>r :History <CR>
 
         " determine fzf root if .git exists..
         fun! s:fzf_root()
@@ -315,8 +347,17 @@
         endfun
 
         " Defines a new command 'Rag' which search from the git root "
-        command! -nargs=* Rag
-          \ call fzf#vim#ag(<q-args>, extend({'dir': s:fzf_root()}, g:fzf#vim#layout()))
+        command! -bang -nargs=* Rag
+          \ call fzf#vim#ag(<q-args>, extend(
+          \                 fzf#vim#with_preview('right:50%'),
+          \                 {'dir': s:fzf_root()}))
+
+        command! -bang -nargs=* Ag
+          \ call fzf#vim#ag(<q-args>,
+          \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+          \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+          \                 <bang>0)
+
 
         " Exit from fzf with esc
         au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
@@ -371,6 +412,12 @@
         endif
     " }
 
+    " ALE {
+        if isdirectory(expand("~/.config/nvim/plugged/ale"))
+            let g:ale_python_yapf_executable = '/usr/local/opt/pyenv/shims/yapf'
+        endif
+    " }
+
     " vim-go {
         if isdirectory(expand("~/.config/nvim/plugged/vim-go"))
             let g:go_highlight_functions = 1
@@ -380,6 +427,7 @@
             let g:go_highlight_operators = 1
             let g:go_highlight_build_constraints = 1
             let g:go_term_enabled = 1
+            let g:go_auto_type_info = 1
 
             " Mappings
             " :GoDef
@@ -404,6 +452,8 @@
             au FileType go nmap<leader>av :AV <CR>
             au FileType go nmap<leader>as :AS <CR>
             au FileType go nmap<leader>at :AT <CR>
+            " GoImports
+            au FileType go nmap <leader><CR> :GoImports <CR>
 
             let g:go_decls_includes = "func,type"
 
