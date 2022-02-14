@@ -19,7 +19,7 @@
 
     " Autocomplete & Linting
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'w0rp/ale'
+    Plug 'dense-analysis/ale'
 
     " Testing generic
     Plug 'janko-m/vim-test'
@@ -30,6 +30,7 @@
 
     " Python
     Plug 'zchee/deoplete-jedi'
+    Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
     " Go
     Plug 'fatih/vim-go'
@@ -57,13 +58,13 @@
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'joshdick/onedark.vim'
-    Plug 'jackiehluo/vim-material'
+    Plug 'hzchirs/vim-material'
+
     call plug#end()
 " }
 
 " Set general stuff {
-    let g:python_host_prog = "/usr/local/opt/pyenv/versions/neovim2/bin/python"
-    let g:python3_host_prog = "/usr/local/opt/pyenv/versions/neovim3/bin/python"
+    let g:python3_host_prog = "/usr/local/opt/pyenv/shims/python"
     let mapleader = ','
     set background=dark
 
@@ -114,8 +115,8 @@
 " }
 
 " neovim UI (colors ...) {
-    let g:airline_theme="onedark"
-    colorscheme onedark
+    let g:airline_theme="material"
+    colorscheme vim-material
 
     set showmode                    " Display the current mode
     set cursorline                  " Highlight current line
@@ -415,6 +416,12 @@
     " ALE {
         if isdirectory(expand("~/.config/nvim/plugged/ale"))
             let g:ale_python_yapf_executable = '/usr/local/opt/pyenv/shims/yapf'
+            let g:ale_fix_on_save = 1
+            let g:ale_fixers = {
+                \    '*': ['remove_trailing_lines', 'trim_whitespace'],
+                \    'javascript': ['eslint', 'prettier'],
+                \    'python': ['black']
+                \}
         endif
     " }
 
@@ -488,12 +495,12 @@
 
     " Deoplete-typescript {
         if isdirectory(expand("~/.config/nvim/plugged/deoplete-typescript"))
-            let g:deoplete#enable_ignore_case = 1
-            let g:deoplete#auto_complete_start_length = 0
-            let g:auto_complete_start_length = 0
-            let g:deoplete#enable_refresh_always = 1
-            let g:deoplete#enable_debug = 1
-            let g:deoplete#enable_profile = 1
+            call deoplete#custom#option("enable_ignore_case", 1)
+            call deoplete#custom#option("auto_complete_start_length", 0)
+            call deoplete#custom#option("enable_refresh_always", 1)
+            call deoplete#custom#option("enable_debug", 1)
+            call deoplete#custom#option("enable_profile", 1)
+            "let g:auto_complete_start_length = 0
         endif
     " }"
     " typescript-vim {
