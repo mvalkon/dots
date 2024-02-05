@@ -5,12 +5,19 @@
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins {
-    call plug#begin()
+    call plug#begin("~/.vim/autoload")
+
+    " Copilot & AI
+    Plug 'github/copilot.vim'
+
     " Navigation and movement
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'tpope/vim-surround'
     Plug 'scrooloose/nerdtree'
     Plug 'tpope/vim-repeat'
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.2' }
 
     " Formatting
     Plug 'nathanaelkane/vim-indent-guides'
@@ -23,10 +30,10 @@
 
     " Testing generic
     Plug 'janko-m/vim-test'
-    Plug 'mfukar/robotframework-vim'
+    "Plug 'mfukar/robotframework-vim'
 
     " Scala
-    Plug 'derekwyatt/vim-scala'
+    "Plug 'derekwyatt/vim-scala'
 
     " Python
     Plug 'zchee/deoplete-jedi'
@@ -39,12 +46,12 @@
     Plug 'sebdah/vim-delve'
 
     " Javascript & FE
-    Plug 'leafgarland/typescript-vim',
-    Plug 'isRuslan/vim-es6'
-    Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-    Plug 'mhartington/deoplete-typescript',
-    Plug 'mattn/emmet-vim'
-    Plug 'posva/vim-vue'
+    "Plug 'leafgarland/typescript-vim',
+    "Plug 'isRuslan/vim-es6'
+    "Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+    "Plug 'mhartington/deoplete-typescript',
+    "Plug 'mattn/emmet-vim'
+    "Plug 'posva/vim-vue'
 
     " templating stuff
     Plug 'mustache/vim-mustache-handlebars'
@@ -59,12 +66,13 @@
     Plug 'vim-airline/vim-airline-themes'
     Plug 'joshdick/onedark.vim'
     Plug 'hzchirs/vim-material'
+    Plug 'connorholyday/vim-snazzy'
 
     call plug#end()
 " }
 
 " Set general stuff {
-    let g:python3_host_prog = "/usr/local/opt/pyenv/shims/python"
+    let g:python3_host_prog = "/Users/mvalkonen/.pyenv/shims/python"
     let mapleader = ','
     set background=dark
 
